@@ -41,5 +41,24 @@ combined_subjects <- rbind(test_subjects, train_subjects)
 combined <- cbind(combined, combined_subjects)
 names(combined)[81] <- "subject"
 
+# Clean up the variable names
+colNames <- colnames(combined)
+for (i in 1:length(colNames)) 
+{
+        colNames[i] = gsub("\\()","",colNames[i])
+        colNames[i] = gsub("-std$","StdDev",colNames[i])
+        colNames[i] = gsub("-mean","Mean",colNames[i])
+        colNames[i] = gsub("^(t)","time",colNames[i])
+        colNames[i] = gsub("^(f)","freq",colNames[i])
+        colNames[i] = gsub("([Gg]ravity)","Gravity",colNames[i])
+        colNames[i] = gsub("([Bb]ody[Bb]ody|[Bb]ody)","Body",colNames[i])
+        colNames[i] = gsub("[Gg]yro","Gyro",colNames[i])
+        colNames[i] = gsub("AccMag","AccMagnitude",colNames[i])
+        colNames[i] = gsub("([Bb]odyaccjerkmag)","BodyAccJerkMagnitude",colNames[i])
+        colNames[i] = gsub("JerkMag","JerkMagnitude",colNames[i])
+        colNames[i] = gsub("GyroMag","GyroMagnitude",colNames[i])
+};
+colnames(combined) <- colNames
+
 # Use the aggregate function to calculate means for eaach column grouped by activity and subject
 groupedaverages <- aggregate(combined[,1:79], list(activity=combined$activity, subject=combined$subject), mean)
